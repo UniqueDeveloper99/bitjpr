@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+        />
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+        />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </head>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        a.waves-effect {
+            width: 100%;
+        }
+        .controls {
+            text-align: center;
+        }
+        ln {
+            display: block;
+            position: relative;
+            height: 20px;
+        }
+        nav {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #26a69a;
+        }
+    </style>
+    <script>
+        function uid(length) {
+            var result = "";
+            var characters =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+                result += characters.charAt(
+                    Math.floor(Math.random() * charactersLength)
+                );
+            }
+            return result;
+        }
+
+        setInterval(function () {
+            $.get(
+                "https://problem-net.000webhostapp.com/state.db?uid=" + uid(8),
+                function (res) {
+                    $("state").html((res == 'play')? "PLAYING" : "STOPPED")
+                }
+            );
+        }, 500);
+
+        function play() {
+            $.get(
+                "https://problem-net.000webhostapp.com/update.php?state=play&uid=" + uid(8),
+                function (res) {
+                    $("state").html((res == 'play')? "PLAYING" : "STOPPED");
+                }
+            );
+        }
+
+        function stop() {
+            $.get(
+                "https://problem-net.000webhostapp.com/update.php?state=stop&uid=" + uid(8),
+                function (res) {
+                    $("state").html((res == 'play')? "PLAYING" : "STOPPED");
+                }
+            );
+        }
+    </script>
+    <body>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">RMCS</a>
+                <!-- <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="sass.html">Sass</a></li>
+                <li><a href="badges.html">Components</a></li>
+                <li><a href="collapsible.html">JavaScript</a></li>
+              </ul> -->
+            </div>
+        </nav>
+        <div class="controls">
+            <a class="waves-effect waves-light btn-large" onclick="play()"
+                ><i class="material-icons left">play_arrow</i>PLAY</a
+            >
+            <ln></ln>
+            <a class="waves-effect waves-light btn-large" onclick="stop()"
+                ><i class="material-icons left">close</i>STOP</a
+            >
+            <ln></ln>
+            <ln></ln>
+            <div class="state">STATUS: <state>LOADING</state></div>
+        </div>
+    </body>
+</html>
